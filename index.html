@@ -4,23 +4,59 @@
     <title>AI App Config Generator</title>
 </head>
 <body>
-    <h1>AI App Config Generator</h1>
-    <p>Demo Task Submission</p>
 
-    <textarea rows="6" cols="50"
-    placeholder="Build a CRM with login and contacts"></textarea>
+<h1>AI App Config Generator</h1>
 
-    <br><br>
+<textarea id="requirements" rows="6" cols="50"
+placeholder="Describe your app"></textarea>
 
-    <button>Generate</button>
+<br><br>
 
-    <pre>
-{
-  "ui": {"pages":["dashboard","contacts"]},
-  "api": {"endpoints":["/login","/contacts"]},
-  "database": {"tables":["users","contacts"]},
-  "auth": {"roles":["admin","user"]}
+<button onclick="generateConfig()">Generate</button>
+
+<pre id="output"></pre>
+
+<script>
+function generateConfig() {
+
+    const text = document
+        .getElementById("requirements")
+        .value
+        .toLowerCase();
+
+    let config = {
+        ui: { pages: [] },
+        api: { endpoints: [] },
+        database: { tables: [] },
+        auth: { roles: ["user"] }
+    };
+
+    if(text.includes("login")) {
+        config.ui.pages.push("login");
+        config.api.endpoints.push("/login");
+    }
+
+    if(text.includes("contact")) {
+        config.ui.pages.push("contacts");
+        config.database.tables.push("contacts");
+    }
+
+    if(text.includes("food")) {
+        config.ui.pages.push("menu");
+        config.database.tables.push("orders");
+        config.api.endpoints.push("/orders");
+    }
+
+    if(text.includes("hospital")) {
+        config.ui.pages.push("patients");
+        config.database.tables.push("patients");
+        config.api.endpoints.push("/patients");
+    }
+
+    document.getElementById("output").textContent =
+        JSON.stringify(config, null, 2);
 }
-    </pre>
+</script>
+
 </body>
 </html>
